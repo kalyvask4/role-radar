@@ -1,0 +1,113 @@
+# Role Radar Preferences
+
+# Target location for job search
+location: "San Francisco Bay Area"
+
+# Include remote positions (false = Bay Area only, no fully-remote roles)
+include_remote: false
+
+# Target seniority levels — PM and Senior PM only (no Staff / Principal)
+seniority:
+  - "PM"
+  - "Senior PM"
+
+# Allowed job titles (case-insensitive matching)
+# AI PM titles listed first for priority
+allowed_titles:
+  - "AI Product Manager"
+  - "AI PM"
+  - "Product Manager"
+  - "PM"
+  - "Technical Product Manager"
+  - "Technical PM"
+  - "Platform PM"
+  - "Platform Product Manager"
+  - "Senior Product Manager"
+  - "Sr. Product Manager"
+  - "Sr PM"
+  - "Senior AI Product Manager"
+  - "Chief of Staff"
+  - "CoS"
+  - "Strategic Initiatives"
+  - "Special Projects"
+  - "Growth Product Manager"
+  - "Growth PM"
+  - "Program Manager"
+  - "Technical Program Manager"
+  - "TPM"
+
+# Keywords to exclude from job titles
+excluded_keywords:
+  - "Staff"
+  - "Principal"
+  - "Director"
+  - "VP"
+  - "Vice President"
+  - "Head of"
+  - "Group PM"
+  - "Group Product"
+  - "Software Engineer"
+  - "Engineer"
+  - "Developer"
+  - "Data Scientist"
+  - "Machine Learning"
+  - "Research Scientist"
+  - "Designer"
+  - "UX"
+  - "UI"
+  - "Sales"
+  - "Account Executive"
+  - "Account Manager"
+  - "Business Development"
+  - "BizDev"
+  - "HR"
+  - "Human Resources"
+  - "Recruiting"
+  - "Recruiter"
+  - "Marketing Manager"
+  - "Content"
+  - "Social Media"
+  - "Copywriter"
+  - "Legal"
+  - "Finance"
+  - "Financial"
+  - "Accounting"
+  - "Accountant"
+  - "Business Operations"
+  - "BizOps"
+  - "Intern"
+  - "Internship"
+  - "Customer Success"
+  - "Support"
+  - "Solutions Engineer"
+  - "Solutions Architect"
+  - "Architect"
+  - "Systems Architect"
+  - "Backend"
+  - "Frontend"
+  - "Full Stack"
+  - "DevOps"
+  - "SRE"
+  - "Infrastructure"
+
+required_keywords: []
+
+# Composable include/exclude rules (optional, takes priority over flat lists above).
+# Each rule supports `all_of` (must contain ALL substrings) and `any_of` (at least one).
+# A job is included if ANY include_rule matches; excluded if ANY exclude_rule matches.
+#
+# Example — include AI-flavored PM titles, exclude staff/principal levels:
+# include_rules:
+#   - any_of: ["ai pm", "ai product manager"]
+#   - all_of: ["product manager"]
+#     any_of: ["ai", "ml", "platform", "growth"]
+# exclude_rules:
+#   - any_of: ["staff", "principal", "director", "vp", "head of"]
+#   - any_of: ["sales", "recruiter", "marketing", "designer", "engineer"]
+
+# Maximum number of roles to include in email
+max_roles_per_email: 50
+
+# Scoring boosts
+boost_ai_companies: true
+boost_vc_backed: true

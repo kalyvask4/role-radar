@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Testing
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Role Radar specific
+.env
+.cache/
+outputs/
+*.db
+*.log
+
+# Personal files (don't commit your CV or contacts)
+Alex_Kalyvas_Resume.pdf
+*_Resume.pdf
+*_resume.pdf
+*_CV.pdf
+data/networking_contacts.json
+
+# Claude / agent state
+.claude/
+nul
+
+# Keep sample/template files
+!.env.example
+!outputs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

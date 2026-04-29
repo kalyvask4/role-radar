@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Radar - Job Review</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Stripe-inspired Light Theme */
+        :root {
+            --stripe-bg: #f6f9fc;
+            --stripe-surface: #ffffff;
+            --stripe-text: #1a1f36;
+            --stripe-text-muted: #697386;
+            --stripe-border: #e3e8ee;
+            --stripe-accent: #635bff;
+            --stripe-accent-hover: #5851eb;
+            --stripe-success: #30b57f;
+            --stripe-error: #ed5f74;
+            --stripe-info: #3b82f6;
+            --stripe-warning: #f59e0b;
+            --stripe-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: var(--stripe-bg);
+            color: var(--stripe-text);
+            min-height: 100vh;
+        }
+
+        /* Cards & Surfaces */
+        .card {
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .job-card {
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 12px;
+            transition: all 0.25s ease;
+        }
+        .job-card:hover {
+            box-shadow: 0 12px 40px rgba(99, 91, 255, 0.12);
+            border-color: var(--stripe-accent);
+        }
+        .job-card.liked {
+            border-left: 4px solid var(--stripe-success);
+            background: linear-gradient(90deg, rgba(48, 181, 127, 0.03) 0%, transparent 100%);
+        }
+        .job-card.disliked {
+            border-left: 4px solid var(--stripe-error);
+            opacity: 0.5;
+        }
+        .job-card.applied {
+            border-left: 4px solid var(--stripe-info);
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.03) 0%, transparent 100%);
+        }
+        .job-card.selected {
+            box-shadow: 0 0 0 2px var(--stripe-accent);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--stripe-accent);
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        .btn-primary:hover {
+            background: var(--stripe-accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--stripe-surface);
+            color: var(--stripe-text);
+            border: 1px solid var(--stripe-border);
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+        }
+        .btn-secondary:hover {
+            background: var(--stripe-bg);
+            border-color: var(--stripe-accent);
+        }
+
+        .feedback-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--stripe-border);
+            background: var(--stripe-surface);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .feedback-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--stripe-accent);
+        }
+        .feedback-btn.active-like {
+            background: var(--stripe-success);
+            color: white;
+            border-color: var(--stripe-success);
+        }
+        .feedback-btn.active-dislike {
+            background: var(--stripe-error);
+            color: white;
+            border-color: var(--stripe-error);
+        }
+        .feedback-btn.active-applied {
+            background: var(--stripe-info);
+            color: white;
+            border-color: var(--stripe-info);
+        }
+
+        /* Filter chips */
+        .filter-chip {
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .filter-chip:hover {
+            border-color: var(--stripe-accent);
+            color: var(--stripe-accent);
+        }
+        .filter-chip.active {
+            background: var(--stripe-accent);
+            color: white;
+            border-color: var(--stripe-accent);
+        }
+
+        /* Inputs */
+        .search-input {
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--stripe-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+        }
+
+        .sort-select {
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .sort-select:focus {
+            border-color: var(--stripe-accent);
+            outline: none;
+        }
+
+        /* Score visualization */
+        .score-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--stripe-border);
+            overflow: hidden;
+        }
+        .score-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: var(--stripe-gradient);
+            transition: width 0.5s ease;
+        }
+
+        /* Stats cards */
+        .stat-card {
+            background: var(--stripe-surface);
+            border: 1px solid var(--stripe-border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--stripe-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Header */
+        .header-bg {
+            background: var(--stripe-surface);
+            border-bottom: 1px solid var(--stripe-border);
+        }
+
+        /* Tags & badges */
+        .match-tag {
+            background: rgba(99, 91, 255, 0.08);
+            color: var(--stripe-accent);
+            border: 1px solid rgba(99, 91, 255, 0.2);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .company-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .badge-ai {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .badge-vc {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+        }
+
+        /* Research & networking links */
+        .research-link {
+            background: var(--stripe-bg);
+            border: 1px solid var(--stripe-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: var(--stripe-text-muted);
+            transition: all 0.2s;
+        }
+        .research-link:hover {
+            border-color: var(--stripe-accent);
+            color: var(--stripe-accent);
+        }
+
+        .networking-link {
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .networking-link.greek-link {
+            background: #0d5eaf;
+            color: white;
+            border: 1px solid #0d5eaf;
+        }
+        .networking-link.greek-link:hover {
+            background: #094b8d;
+            transform: scale(1.02);
+        }
+        .networking-link.gsb-link {
+            background: #8c1515;
+            color: white;
+            border: 1px solid #8c1515;
+        }
+        .networking-link.gsb-link:hover {
+            background: #6e1010;
+            transform: scale(1.02);
+        }
+
+        /* Description preview */
+        .description-preview {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .description-preview.expanded {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            background: var(--stripe-border);
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--stripe-gradient);
+            transition: width 0.3s ease;
+        }
+
+        /* Toast */
+        .toast {
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Modal */
+        .modal-bg {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: var(--stripe-surface);
+            border-radius: 16px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+        }
+
+        /* Company logo */
+        .company-logo-placeholder {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--stripe-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+
+        /* Keyboard shortcuts hint */
+        .kbd {
+            background: var(--stripe-bg);
+            border: 1px solid var(--stripe-border);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: monospace;
+            color: var(--stripe-text-muted);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--stripe-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--stripe-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--stripe-accent); }
+
+        /* Links */
+        a { color: var(--stripe-accent); text-decoration: none; }
+        a:hover { color: var(--stripe-accent-hover); }
+
+        /* Expand button */
+        .expand-btn { transition: transform 0.2s; }
+        .expand-btn.rotated { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen">
+        <!-- Header -->
+        <header class="header-bg sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <h1 class="text-xl font-bold" style="background: var(--stripe-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Role Radar</h1>
+                        <span class="text-sm text-gray-400">PM Job Search</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs text-gray-400 hidden md:block">
+                            <span class="kbd">j</span>/<span class="kbd">k</span> navigate
+                            <span class="kbd">l</span> like
+                            <span class="kbd">d</span> dislike
+                            <span class="kbd">a</span> applied
+                            <span class="kbd">o</span> open
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="max-w-7xl mx-auto px-6 py-8">
+            <!-- Stats row -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">-</div>
+                    <div class="text-sm text-gray-500">Total Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-liked">-</div>
+                    <div class="text-sm text-gray-500">Liked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-applied">-</div>
+                    <div class="text-sm text-gray-500">Applied</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-passed">-</div>
+                    <div class="text-sm text-gray-500">Passed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-unreviewed">-</div>
+                    <div class="text-sm text-gray-500">To Review</div>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="mb-6">
+                <div class="flex justify-between text-sm text-gray-500 mb-2">
+                    <span>Review Progress</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="card p-4 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Search -->
+                    <div class="flex-1">
+                        <input type="text" id="search-input" class="search-input w-full" placeholder="Search by company or title..." oninput="filterJobs()">
+                    </div>
+
+                    <!-- Sort -->
+                    <div>
+                        <select id="sort-select" class="sort-select" onchange="sortJobs()">
+                            <option value="score-desc">Score (High to Low)</option>
+                            <option value="score-asc">Score (Low to High)</option>
+                            <option value="salary-desc">Salary (High to Low)</option>
+                            <option value="date-desc">Date (Newest)</option>
+                            <option value="company-asc">Company (A-Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter chips -->
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">All</button>
+                    <button class="filter-chip" data-filter="unreviewed" onclick="setFilter('unreviewed')">Unreviewed</button>
+                    <button class="filter-chip" data-filter="liked" onclick="setFilter('liked')">Liked</button>
+                    <button class="filter-chip" data-filter="applied" onclick="setFilter('applied')">Applied</button>
+                    <button class="filter-chip" data-filter="disliked" onclick="setFilter('disliked')">Passed</button>
+                </div>
+            </div>
+
+            <!-- Job listings -->
+            <div id="job-list" class="space-y-4">
+                <!-- Jobs will be rendered here -->
+            </div>
+
+            <!-- Empty state -->
+            <div id="empty-state" class="hidden text-center py-16">
+                <div class="text-6xl mb-4">🔍</div>
+                <h3 class="text-xl font-semibold mb-2">No jobs found</h3>
+                <p class="text-gray-500">Try adjusting your filters or run the CLI to fetch new jobs.</p>
+            </div>
+
+            <!-- Loading state -->
+            <div id="loading-state" class="text-center py-16">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200" style="border-top-color: var(--stripe-accent)"></div>
+                <p class="mt-4 text-gray-500">Loading jobs...</p>
+            </div>
+        </main>
+
+        <!-- Toast container -->
+        <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+        <!-- Notes Modal -->
+        <div id="notes-modal" class="fixed inset-0 modal-bg hidden z-50 flex items-center justify-center p-4">
+            <div class="modal-content w-full max-w-md p-6">
+                <h3 class="text-lg font-semibold mb-4">Add Notes</h3>
+                <textarea id="notes-input" class="search-input w-full h-32 resize-none" placeholder="Add your notes about this job..."></textarea>
+                <div class="flex justify-end gap-3 mt-4">
+                    <button onclick="closeNotesModal()" class="btn-secondary px-4 py-2">Cancel</button>
+                    <button onclick="saveNotes()" class="btn-primary px-4 py-2">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dislike Reason Modal -->
+        <div id="dislike-modal" class="fixed inset-0 modal-bg hidden z-50 flex items-center justify-center p-4">
+            <div class="modal-content w-full max-w-md p-6">
+                <h3 class="text-lg font-semibold mb-4">Why are you passing on this?</h3>
+                <p class="text-sm text-gray-500 mb-4">This helps improve future recommendations</p>
+                <div class="space-y-2">
+                    <button onclick="submitDislike('role')" class="btn-secondary w-full py-3 text-left px-4">The role itself doesn't fit</button>
+                    <button onclick="submitDislike('company')" class="btn-secondary w-full py-3 text-left px-4">Not interested in this company</button>
+                    <button onclick="submitDislike('location')" class="btn-secondary w-full py-3 text-left px-4">Location doesn't work</button>
+                    <button onclick="submitDislike('seniority')" class="btn-secondary w-full py-3 text-left px-4">Wrong seniority level</button>
+                    <button onclick="submitDislike('other')" class="btn-secondary w-full py-3 text-left px-4">Other reason</button>
+                </div>
+                <button onclick="closeDislikeModal()" class="mt-4 text-sm text-gray-500 hover:text-gray-700">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentFilter = 'all';
+        let selectedIndex = -1;
+        let currentNotesJob = null;
+        let currentDislikeJob = null;
+
+        // Networking contacts loaded from data/networking_contacts.json via API
+        let networkingContacts = {};
+
+        function getNetworkingContacts(companyName) {
+            const normalized = companyName.toLowerCase().trim();
+            return networkingContacts[normalized] || { greeks: [], gsb: [] };
+        }
+
+        // Render compact Greek tags for job card header
+        function renderGreekTags(companyName) {
+            const contacts = getNetworkingContacts(companyName);
+            if (!contacts.greeks || contacts.greeks.length === 0) return '';
+
+            return contacts.greeks.slice(0, 3).map(p => `
+                <a href="${p.linkedin}" target="_blank"
+                   class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full hover:opacity-80"
+                   style="background: #0d5eaf; color: white;"
+                   onclick="event.stopPropagation()" title="Connect with ${p.name}">
+                    🇬🇷 ${p.name} <span class="opacity-75">(${p.role})</span>
+                </a>
+            `).join('');
+        }
+
+        // Render compact GSB tags for job card header
+        function renderGsbTags(companyName) {
+            const contacts = getNetworkingContacts(companyName);
+            if (!contacts.gsb || contacts.gsb.length === 0) return '';
+
+            return contacts.gsb.slice(0, 3).map(p => `
+                <a href="${p.linkedin}" target="_blank"
+                   class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full hover:opacity-80"
+                   style="background: #8c1515; color: white;"
+                   onclick="event.stopPropagation()" title="Connect with ${p.name}">
+                    🎓 ${p.name} <span class="opacity-75">(${p.role})</span>
+                </a>
+            `).join('');
+        }
+
+        function renderNetworkingSection(companyName) {
+            const contacts = getNetworkingContacts(companyName);
+            const hasGreeks = contacts.greeks && contacts.greeks.length > 0;
+            const hasGsb = contacts.gsb && contacts.gsb.length > 0;
+
+            if (!hasGreeks && !hasGsb) {
+                // No curated contacts - don't show anything (search via research links row)
+                return '';
+            }
+
+            let html = '<div class="mt-3 space-y-2">';
+
+            if (hasGreeks) {
+                html += `
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-medium px-2 py-1 rounded" style="background: #0d5eaf; color: white;">🇬🇷 Greeks</span>
+                        ${contacts.greeks.slice(0, 3).map(p => `
+                            <a href="${p.linkedin}" target="_blank" class="text-sm hover:underline" style="color: #0d5eaf;" onclick="event.stopPropagation()">
+                                ${p.name} <span class="text-gray-400">(${p.role})</span>
+                            </a>
+                        `).join('<span class="text-gray-300">•</span>')}
+                    </div>
+                `;
+            }
+
+            if (hasGsb) {
+                html += `
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-medium px-2 py-1 rounded" style="background: #8c1515; color: white;">🎓 GSB</span>
+                        ${contacts.gsb.slice(0, 3).map(p => `
+                            <a href="${p.linkedin}" target="_blank" class="text-sm hover:underline" style="color: #8c1515;" onclick="event.stopPropagation()">
+                                ${p.name} <span class="text-gray-400">(${p.role})</span>
+                            </a>
+                        `).join('<span class="text-gray-300">•</span>')}
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        // LinkedIn company ID mapping
+        const linkedInCompanyIds = {
+            'anthropic': '19962912',
+            'openai': '24888043',
+            'google deepmind': '2374003',
+            'meta ai': '10667',
+            'scale ai': '15834818',
+            'databricks': '2824596',
+            'hugging face': '22237045',
+            'cohere': '27441252',
+            'mistral ai': '96989756',
+            'perplexity': '75754270',
+            'together ai': '74505035',
+            'cursor': '80051770',
+            'cognition': '96453844',
+            'notion': '5307600',
+            'figma': '4601269',
+            'stripe': '898437',
+            'mercury': '18496310',
+            'brex': '18183707',
+            'ramp': '18137098',
+            'airtable': '5381412',
+            'vercel': '10098238',
+            'linear': '18676236',
+            'webflow': '5626165',
+            'flexport': '3630832',
+            'plaid': '5286602',
+            'glean': '40665371',
+            'harvey': '80622432',
+            'descript': '10999540',
+            'elevenlabs': '80181892',
+            'suno': '92158954',
+            'pika': '93867932',
+            'runway': '15087756',
+            'stability ai': '76792568',
+            'midjourney': '79678816',
+            'character.ai': '81424933',
+            'inflection ai': '81617782',
+            'adept': '72691276',
+            'goodfire': '104113618',
+            'reflection ai': '104272682',
+            'magic': '96851668',
+            'world labs': '104215476',
+            'physical intelligence': '98676380',
+            'sierra': '96973960',
+            'poolside': '104082940',
+            'langchain': '80307960',
+            'pinecone': '18733888',
+            'nvidia': '3608',
+            'xai': '91217725',
+            'clay': '66457694',
+            'lovable': '101556720'
+        };
+
+        function getLinkedInCompanyId(companyName) {
+            const normalized = companyName.toLowerCase().trim();
+            return linkedInCompanyIds[normalized] || encodeURIComponent(`"${companyName}"`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadJobs);
+        document.addEventListener('keydown', handleKeyboard);
+
+        async function loadJobs() {
+            try {
+                // Load contacts and jobs in parallel
+                const [contactsResp, jobsResp] = await Promise.all([
+                    fetch('/api/contacts'),
+                    fetch('/api/jobs')
+                ]);
+
+                networkingContacts = await contactsResp.json();
+                const data = await jobsResp.json();
+
+                if (data.error) {
+                    showError(data.error);
+                    return;
+                }
+
+                allJobs = data.jobs || [];
+                filterJobs();
+                updateStats();
+
+                document.getElementById('loading-state').classList.add('hidden');
+            } catch (error) {
+                console.error('Failed to load jobs:', error);
+                showError('Failed to load jobs. Make sure you have run the role-radar CLI first.');
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('empty-state').querySelector('p').textContent = message;
+        }
+
+        function filterJobs() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+            filteredJobs = allJobs.filter(job => {
+                // Search filter
+                const matchesSearch = !searchTerm ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.title.toLowerCase().includes(searchTerm);
+
+                // Status filter
+                let matchesFilter = true;
+                if (currentFilter === 'liked') {
+                    matchesFilter = job.feedback === 'like';
+                } else if (currentFilter === 'disliked') {
+                    matchesFilter = job.feedback === 'dislike';
+                } else if (currentFilter === 'applied') {
+                    matchesFilter = job.applied;
+                } else if (currentFilter === 'unreviewed') {
+                    matchesFilter = !job.feedback;
+                }
+
+                return matchesSearch && matchesFilter;
+            });
+
+            sortJobs();
+        }
+
+        function sortJobs() {
+            const sortValue = document.getElementById('sort-select').value;
+
+            filteredJobs.sort((a, b) => {
+                switch(sortValue) {
+                    case 'score-desc': return (b.score || 0) - (a.score || 0);
+                    case 'score-asc': return (a.score || 0) - (b.score || 0);
+                    case 'salary-desc':
+                        const salaryA = parseSalary(a.salary);
+                        const salaryB = parseSalary(b.salary);
+                        return salaryB - salaryA;
+                    case 'date-desc':
+                        return new Date(b.posted_at || 0) - new Date(a.posted_at || 0);
+                    case 'company-asc':
+                        return a.company.localeCompare(b.company);
+                    default:
+                        return 0;
+                }
+            });
+
+            renderJobs();
+        }
+
+        function parseSalary(salaryStr) {
+            if (!salaryStr) return 0;
+            const match = salaryStr.match(/\$?([\d,]+)/);
+            return match ? parseInt(match[1].replace(/,/g, '')) : 0;
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.toggle('active', chip.dataset.filter === filter);
+            });
+
+            filterJobs();
+        }
+
+        function renderJobs() {
+            const container = document.getElementById('job-list');
+            const emptyState = document.getElementById('empty-state');
+
+            if (filteredJobs.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            container.innerHTML = filteredJobs.map((job, index) => renderJobCard(job, index)).join('');
+        }
+
+        function renderJobCard(job, index) {
+            const statusClass = job.applied ? 'applied' : (job.feedback === 'like' ? 'liked' : (job.feedback === 'dislike' ? 'disliked' : ''));
+            const selectedClass = index === selectedIndex ? 'selected' : '';
+
+            return `
+                <div class="job-card p-5 ${statusClass} ${selectedClass}" id="job-${index}" data-job-id="${job.id}">
+                    <div class="flex gap-4">
+                        <!-- Company logo -->
+                        <div class="flex-shrink-0">
+                            <div class="company-logo-placeholder">
+                                ${job.company.charAt(0).toUpperCase()}
+                            </div>
+                        </div>
+
+                        <!-- Job info -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <h3 class="font-semibold text-lg truncate">${job.title}</h3>
+                                        ${job.score ? `<span class="text-sm font-medium px-2 py-0.5 rounded-full" style="background: var(--stripe-gradient); color: white;">${Math.round(job.score)}</span>` : ''}
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-1 flex-wrap">
+                                        <span class="font-medium">${job.company}</span>
+                                        ${getCompanyBadge(job)}
+                                        ${renderGreekTags(job.company)}
+                                        ${renderGsbTags(job.company)}
+                                    </div>
+                                </div>
+
+                                <!-- Action buttons -->
+                                <div class="flex items-center gap-2 flex-shrink-0">
+                                    <button class="feedback-btn ${job.feedback === 'like' ? 'active-like' : ''}" onclick="event.stopPropagation(); setFeedback('${job.id}', 'like')" title="Like (l)">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
+                                    </button>
+                                    <button class="feedback-btn ${job.feedback === 'dislike' ? 'active-dislike' : ''}" onclick="event.stopPropagation(); showDislikeModal('${job.id}')" title="Pass (d)">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"></path></svg>
+                                    </button>
+                                    <button class="feedback-btn ${job.applied ? 'active-applied' : ''}" onclick="event.stopPropagation(); toggleApplied('${job.id}')" title="Applied (a)">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    </button>
+                                    <a href="${job.url}" target="_blank" class="feedback-btn" onclick="event.stopPropagation()" title="Open (o)">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Meta info -->
+                            <div class="flex flex-wrap items-center gap-3 mt-3 text-sm text-gray-500">
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    ${job.location}
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    ${job.salary || 'Not specified'}
+                                    ${job.salary_is_estimated ? '<span class="text-xs">(est)</span>' : ''}
+                                </span>
+                                ${job.posted_at ? `<span class="flex items-center gap-1">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    ${formatDate(job.posted_at)}
+                                </span>` : ''}
+                            </div>
+
+                            <!-- Networking section -->
+                            ${renderNetworkingSection(job.company)}
+
+                            <!-- Research links -->
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                <a href="https://www.linkedin.com/company/${job.company.toLowerCase().replace(/\s+/g, '-')}" target="_blank" class="research-link" onclick="event.stopPropagation()">LinkedIn</a>
+                                <a href="https://www.glassdoor.com/Search/results.htm?keyword=${encodeURIComponent(job.company)}" target="_blank" class="research-link" onclick="event.stopPropagation()">Glassdoor</a>
+                                <a href="https://www.levels.fyi/companies/${job.company.toLowerCase().replace(/\s+/g, '-')}/salaries/product-manager" target="_blank" class="research-link" onclick="event.stopPropagation()">Levels.fyi</a>
+                                <a href="https://www.linkedin.com/search/results/people/?currentCompany=${getLinkedInCompanyId(job.company)}&keywords=greece%20OR%20greek%20OR%20%CE%95%CE%BB%CE%BB%CE%AC%CE%B4%CE%B1" target="_blank" class="research-link" style="background: #0d5eaf; color: white; border-color: #0d5eaf;" onclick="event.stopPropagation()">🇬🇷 Find Greeks</a>
+                                <a href="https://www.linkedin.com/search/results/people/?currentCompany=${getLinkedInCompanyId(job.company)}&keywords=%22stanford%20gsb%22%20OR%20%22graduate%20school%20of%20business%22" target="_blank" class="research-link" style="background: #8c1515; color: white; border-color: #8c1515;" onclick="event.stopPropagation()">🎓 Find GSB</a>
+                                <button class="research-link" onclick="event.stopPropagation(); openNotesModal('${job.id}')">
+                                    ${job.notes ? '📝 Edit notes' : '+ Add notes'}
+                                </button>
+                            </div>
+
+                            <!-- Score breakdown -->
+                            ${renderScoreBreakdown(job.score_breakdown)}
+
+                            <!-- Match reasons -->
+                            ${job.match_reasons && job.match_reasons.length > 0 ? `
+                                <div class="flex flex-wrap gap-1 mt-3">
+                                    ${job.match_reasons.slice(0, 3).map(reason => `<span class="match-tag">${escapeHtml(reason)}</span>`).join('')}
+                                    ${job.match_reasons.length > 3 ? `<button class="text-xs text-gray-400 hover:text-gray-600 cursor-pointer" onclick="event.stopPropagation(); toggleMoreReasons(this, ${index})">+${job.match_reasons.length - 3} more</button>` : ''}
+                                </div>
+                                ${job.match_reasons.length > 3 ? `
+                                    <div class="flex flex-wrap gap-1 mt-1 hidden" id="more-reasons-${index}">
+                                        ${job.match_reasons.slice(3).map(reason => `<span class="match-tag">${escapeHtml(reason)}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                            ` : ''}
+
+                            <!-- Description toggle -->
+                            <button onclick="event.stopPropagation(); toggleDescription(${index})" class="flex items-center gap-1 mt-3 text-sm text-gray-500 hover:text-gray-700">
+                                <svg class="w-4 h-4 expand-btn" id="expand-idx-${index}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                                Show description
+                            </button>
+
+                            <!-- Description -->
+                            <div class="description-preview mt-3" id="desc-idx-${index}">
+                                <div class="p-4 rounded-lg bg-gray-50 text-sm text-gray-600 whitespace-pre-line">
+                                    ${job.description
+                                        ? escapeHtml(job.description)
+                                        : `<div class="text-center py-4">
+                                            <p class="text-gray-500 mb-3">Full description available on the job page</p>
+                                            <a href="${job.url}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium" style="background: var(--stripe-accent);">
+                                                View Full Job Posting
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                            </a>
+                                        </div>`
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Notes display -->
+                            ${job.notes ? `
+                                <div class="mt-3 p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm">
+                                    <div class="text-xs text-yellow-600 font-medium mb-1">Your notes:</div>
+                                    <div class="text-gray-700">${job.notes}</div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCompanyBadge(job) {
+            let badges = '';
+            // Check if it's a top AI company or VC-backed
+            const url = job.url || '';
+            if (url.includes('anthropic') || url.includes('openai') || url.includes('deepmind') ||
+                url.includes('scaleai') || url.includes('databricks')) {
+                badges += '<span class="company-badge badge-ai">Top AI</span>';
+            }
+            // Check if we have networking contacts at this company
+            const contacts = getNetworkingContacts(job.company);
+            const totalContacts = (contacts.greeks?.length || 0) + (contacts.gsb?.length || 0);
+            if (totalContacts > 0) {
+                badges += `<span class="company-badge" style="background: linear-gradient(135deg, #0d5eaf 0%, #8c1515 100%); color: white;">Network: ${totalContacts}</span>`;
+            }
+            return badges;
+        }
+
+        function renderScoreBreakdown(breakdown) {
+            if (!breakdown) return '';
+
+            function parseScore(scoreStr) {
+                if (!scoreStr) return { value: 0, max: 0 };
+                if (typeof scoreStr === 'number') return { value: scoreStr, max: 100 };
+                const match = String(scoreStr).match(/^([\d.]+)\/([\d.]+)/);
+                if (match) return { value: parseFloat(match[1]), max: parseFloat(match[2]) };
+                return { value: parseFloat(scoreStr) || 0, max: 100 };
+            }
+
+            const dimensions = [
+                { key: 'title_seniority', label: 'Title' },
+                { key: 'skills_overlap', label: 'Skills' },
+                { key: 'domain_overlap', label: 'Domain' },
+                { key: 'location_fit', label: 'Location' },
+                { key: 'company_preference', label: 'Company' }
+            ];
+
+            return `
+                <div class="grid grid-cols-5 gap-2 mt-3">
+                    ${dimensions.map(dim => {
+                        const { value, max } = parseScore(breakdown[dim.key]);
+                        const pct = max > 0 ? (value / max * 100) : 0;
+                        return `
+                            <div class="text-center">
+                                <div class="text-xs text-gray-500 mb-1">${dim.label}</div>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${pct}%"></div>
+                                </div>
+                                <div class="text-xs font-medium mt-1">${Math.round(value)}/${max}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays}d ago`;
+            if (diffDays < 30) return `${Math.floor(diffDays/7)}w ago`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function toggleDescription(index) {
+            const desc = document.getElementById(`desc-idx-${index}`);
+            const btn = document.getElementById(`expand-idx-${index}`);
+            if (!desc || !btn) return;
+            if (desc.classList.contains('expanded')) {
+                desc.classList.remove('expanded');
+                btn.classList.remove('rotated');
+            } else {
+                desc.classList.add('expanded');
+                btn.classList.add('rotated');
+            }
+        }
+
+        function toggleMoreReasons(btnEl, index) {
+            const moreDiv = document.getElementById(`more-reasons-${index}`);
+            if (!moreDiv) return;
+            if (moreDiv.classList.contains('hidden')) {
+                moreDiv.classList.remove('hidden');
+                btnEl.textContent = 'show less';
+            } else {
+                moreDiv.classList.add('hidden');
+                const job = filteredJobs[index];
+                btnEl.textContent = `+${job.match_reasons.length - 3} more`;
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateStats() {
+            const total = allJobs.length;
+            const liked = allJobs.filter(j => j.feedback === 'like').length;
+            const applied = allJobs.filter(j => j.applied).length;
+            const passed = allJobs.filter(j => j.feedback === 'dislike').length;
+            const unreviewed = allJobs.filter(j => !j.feedback).length;
+            const reviewed = total - unreviewed;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-liked').textContent = liked;
+            document.getElementById('stat-applied').textContent = applied;
+            document.getElementById('stat-passed').textContent = passed;
+            document.getElementById('stat-unreviewed').textContent = unreviewed;
+
+            const progress = total > 0 ? Math.round((reviewed / total) * 100) : 0;
+            document.getElementById('progress-text').textContent = `${progress}%`;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+        }
+
+        // Feedback functions
+        async function setFeedback(jobId, feedback) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+
+            try {
+                await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_id: jobId,
+                        company: job.company,
+                        title: job.title,
+                        feedback: feedback,
+                        notes: job.notes || '',
+                        applied: job.applied || false
+                    })
+                });
+
+                job.feedback = feedback;
+                filterJobs();
+                updateStats();
+                showToast(feedback === 'like' ? 'Added to liked!' : 'Marked as passed', 'success');
+            } catch (error) {
+                showToast('Failed to save feedback', 'error');
+            }
+        }
+
+        function showDislikeModal(jobId) {
+            currentDislikeJob = allJobs.find(j => j.id === jobId);
+            document.getElementById('dislike-modal').classList.remove('hidden');
+        }
+
+        function closeDislikeModal() {
+            document.getElementById('dislike-modal').classList.add('hidden');
+            currentDislikeJob = null;
+        }
+
+        async function submitDislike(reason) {
+            if (!currentDislikeJob) return;
+
+            try {
+                await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_id: currentDislikeJob.id,
+                        company: currentDislikeJob.company,
+                        title: currentDislikeJob.title,
+                        feedback: 'dislike',
+                        dislike_reason: reason,
+                        notes: currentDislikeJob.notes || '',
+                        applied: currentDislikeJob.applied || false
+                    })
+                });
+
+                currentDislikeJob.feedback = 'dislike';
+                closeDislikeModal();
+                filterJobs();
+                updateStats();
+                showToast('Marked as passed', 'success');
+            } catch (error) {
+                showToast('Failed to save', 'error');
+            }
+        }
+
+        async function toggleApplied(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+
+            const newApplied = !job.applied;
+
+            try {
+                await fetch('/api/applied', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_id: jobId,
+                        company: job.company,
+                        title: job.title,
+                        applied: newApplied
+                    })
+                });
+
+                job.applied = newApplied;
+                filterJobs();
+                updateStats();
+                showToast(newApplied ? 'Marked as applied!' : 'Unmarked as applied', 'success');
+            } catch (error) {
+                showToast('Failed to update', 'error');
+            }
+        }
+
+        // Notes functions
+        function openNotesModal(jobId) {
+            currentNotesJob = allJobs.find(j => j.id === jobId);
+            if (currentNotesJob) {
+                document.getElementById('notes-input').value = currentNotesJob.notes || '';
+                document.getElementById('notes-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notes-modal').classList.add('hidden');
+            currentNotesJob = null;
+        }
+
+        async function saveNotes() {
+            if (!currentNotesJob) return;
+
+            const notes = document.getElementById('notes-input').value;
+
+            try {
+                await fetch('/api/notes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        job_id: currentNotesJob.id,
+                        company: currentNotesJob.company,
+                        title: currentNotesJob.title,
+                        notes: notes
+                    })
+                });
+
+                currentNotesJob.notes = notes;
+                closeNotesModal();
+                renderJobs();
+                showToast('Notes saved!', 'success');
+            } catch (error) {
+                showToast('Failed to save notes', 'error');
+            }
+        }
+
+        // Keyboard navigation
+        function handleKeyboard(e) {
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+
+            const job = filteredJobs[selectedIndex];
+
+            switch(e.key) {
+                case 'j':
+                    selectJob(Math.min(selectedIndex + 1, filteredJobs.length - 1));
+                    break;
+                case 'k':
+                    selectJob(Math.max(selectedIndex - 1, 0));
+                    break;
+                case 'l':
+                    if (job) setFeedback(job.id, 'like');
+                    break;
+                case 'd':
+                    if (job) showDislikeModal(job.id);
+                    break;
+                case 'a':
+                    if (job) toggleApplied(job.id);
+                    break;
+                case 'o':
+                case 'Enter':
+                    if (job && job.url) window.open(job.url, '_blank');
+                    break;
+                case 'n':
+                    if (job) openNotesModal(job.id);
+                    break;
+                case 'e':
+                    if (job) toggleDescription(job.id);
+                    break;
+                case '/':
+                    e.preventDefault();
+                    document.getElementById('search-input').focus();
+                    break;
+                case 'Escape':
+                    closeNotesModal();
+                    closeDislikeModal();
+                    break;
+            }
+        }
+
+        function selectJob(index) {
+            if (index < 0 || index >= filteredJobs.length) return;
+
+            const prevCard = document.getElementById(`job-${selectedIndex}`);
+            if (prevCard) prevCard.classList.remove('selected');
+
+            selectedIndex = index;
+
+            const newCard = document.getElementById(`job-${selectedIndex}`);
+            if (newCard) {
+                newCard.classList.add('selected');
+                newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+
+            toast.className = `toast ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg`;
+            toast.textContent = message;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

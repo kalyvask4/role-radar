@@ -1,0 +1,147 @@
+company_name,homepage_url,careers_url,vc_backers,notes
+# VC Portfolio Companies - Updated with a16z Top 100 Gen AI + Sequoia AI Portfolio
+# Format: company_name,homepage_url,careers_url,vc_backers,notes
+
+# =====================================================
+# a16z Top 100 Gen AI Apps (2026)
+# Source: https://a16z.com/100-gen-ai-apps-5/
+# =====================================================
+
+# Consumer AI - Web
+Character.AI,https://character.ai,https://character.ai/careers,"a16z",AI companions
+Cursor,https://cursor.sh,https://cursor.sh/careers,"a16z, Thrive Capital",AI code editor
+ElevenLabs,https://elevenlabs.io,https://elevenlabs.io/careers,"a16z, Sequoia",Voice AI
+Gamma,https://gamma.app,https://gamma.app/careers,"Accel",AI presentations
+Lovable,https://lovable.dev,https://lovable.dev/careers,YC,AI app builder
+Midjourney,https://midjourney.com,,Independent,Image generation
+Perplexity,https://perplexity.ai,https://perplexity.ai/careers,"IVP, NEA, Databricks",AI search
+Photoroom,https://photoroom.com,https://www.photoroom.com/careers,"Balderton, a16z",AI photo editing
+Replit,https://replit.com,https://replit.com/careers,"a16z, YC",AI coding platform
+Suno,https://suno.ai,https://suno.ai/careers,"Lightspeed",AI music generation
+Veed,https://veed.io,https://www.veed.io/careers,Sequoia,AI video editing
+
+# =====================================================
+# a16z AI Spending Report Companies
+# Source: https://a16z.com/the-ai-application-spending-report
+# =====================================================
+
+# Productivity & Agents
+Notion,https://notion.so,https://www.notion.so/careers,"Sequoia, Index Ventures",Productivity and AI
+Manus,https://manus.im,https://manus.im/careers,Independent,AI agent
+Otter.ai,https://otter.ai,https://otter.ai/careers,Horizons Ventures,Meeting transcription
+Read.ai,https://read.ai,https://read.ai/careers,Madrona,Meeting AI
+Fyxer,https://fyxer.ai,https://fyxer.ai/careers,,Email AI
+
+# Creative Tools
+Canva,https://canva.com,https://www.canva.com/careers,Sequoia,Design platform with AI
+Descript,https://descript.com,https://descript.com/careers,"a16z, Spark Capital",Video/audio editing AI
+Opus Clip,https://opus.pro,https://opus.pro/careers,,AI video clipping
+
+# Code & Dev Tools
+Cognition,https://cognition-labs.com,https://cognition-labs.com/careers,"Founders Fund, a16z",Devin AI agent
+Cursor,https://cursor.sh,https://cursor.sh/careers,"a16z, Thrive Capital",AI code editor
+
+# Sales & Marketing
+Clay,https://clay.com,https://clay.com/careers,"Sequoia, Meritech",Data enrichment AI
+Instantly,https://instantly.ai,https://instantly.ai/careers,,Sales outreach AI
+11x,https://11x.ai,https://11x.ai/careers,"a16z, Benchmark",AI SDR
+
+# Customer Service
+Ada,https://ada.cx,https://ada.cx/careers,"Accel, Spark",AI customer service
+Crisp,https://crisp.chat,https://crisp.chat/careers,,Customer messaging AI
+Lorikeet,https://lorikeetcx.ai,https://lorikeetcx.ai/careers,,Customer support AI
+
+# HR & Recruiting
+Micro1,https://micro1.ai,https://micro1.ai/careers,,AI recruiting
+Metaview,https://metaview.ai,https://metaview.ai/careers,,Interview AI
+
+# Legal
+Harvey,https://www.harvey.ai,https://www.harvey.ai/careers,"Sequoia, Kleiner Perkins",Legal AI
+Crosby Legal,https://crosby.ai,https://crosby.ai/careers,,Legal AI
+
+# =====================================================
+# Sequoia Capital AI Portfolio
+# Source: Sequoia portfolio tracking
+# =====================================================
+
+Glean,https://www.glean.com,https://www.glean.com/careers,"Sequoia, Kleiner Perkins, Lightspeed",Enterprise AI search
+Sierra,https://sierra.ai,https://sierra.ai/careers,"Sequoia, Benchmark",AI agents for CX
+Together AI,https://together.ai,https://together.ai/careers,"a16z, Kleiner Perkins",Open source AI infra
+OpenRouter,https://openrouter.ai,https://openrouter.ai/careers,YC,LLM API router
+Statsig,https://statsig.com,https://statsig.com/careers,Sequoia,Feature management
+Rillet,https://rillet.com,https://rillet.com/careers,Sequoia,Accounting automation
+
+# =====================================================
+# Other Top VC-Backed AI Startups
+# =====================================================
+
+Anthropic,https://anthropic.com,https://www.anthropic.com/careers,"Spark, Google, Salesforce, a16z",Claude AI (also in AI Top 20)
+Ramp,https://ramp.com,https://ramp.com/careers,"Founders Fund, Thrive Capital",Finance automation AI
+Airtable,https://airtable.com,https://airtable.com/careers,"Benchmark, Thrive Capital",No-code database + AI
+Figma,https://www.figma.com,https://www.figma.com/careers,"Greylock, Kleiner Perkins, Index",Design platform + AI
+Vercel,https://vercel.com,https://vercel.com/careers,"Accel, GV",Frontend cloud and AI
+Linear,https://linear.app,https://linear.app/careers,"Sequoia, Accel",Issue tracking + AI
+Retool,https://retool.com,https://retool.com/careers,"Sequoia, YC",Internal tools + AI
+Webflow,https://webflow.com,https://webflow.com/careers,"Accel, YC",Visual web dev + AI
+Rippling,https://www.rippling.com,https://www.rippling.com/careers,"Sequoia, Founders Fund",HR platform + AI
+Plaid,https://plaid.com,https://plaid.com/careers,"Spark Capital, NEA",Financial data + AI
+Stripe,https://stripe.com,https://stripe.com/jobs,"Sequoia, Andreessen Horowitz",Payments + AI
+Flexport,https://www.flexport.com,https://www.flexport.com/careers,"Founders Fund, Softbank",Logistics + AI
+Brex,https://www.brex.com,https://www.brex.com/careers,"YC, Ribbit Capital",Corporate cards + AI
+Mercury,https://mercury.com,https://mercury.com/jobs,"a16z, CRV",Banking for startups
+
+# New additions from AI landscape
+Warp,https://warp.dev,https://warp.dev/careers,"a16z, YC",AI terminal
+Jasper,https://jasper.ai,https://jasper.ai/careers,"Insight Partners, IVP",AI content
+Writer,https://writer.com,https://writer.com/careers,"Insight Partners, Accel",Enterprise AI writing
+Copy.ai,https://copy.ai,https://copy.ai/careers,"Sequoia, Tiger Global",AI copywriting
+Runway,https://runwayml.com,https://runwayml.com/careers,"Felicis, Lux Capital",AI video generation
+Pika,https://pika.art,https://pika.art/careers,"Lightspeed, a16z",AI video
+Synthesia,https://synthesia.io,https://synthesia.io/careers,"Kleiner Perkins, GV",AI video avatars
+Cohere,https://cohere.com,https://cohere.com/careers,"Inovia, Index Ventures",Enterprise LLM
+Adept,https://adept.ai,https://adept.ai/careers,"General Catalyst, Spark",AI agents
+Inflection,https://inflection.ai,https://inflection.ai/careers,"Microsoft, Reid Hoffman",Personal AI
+Stability AI,https://stability.ai,https://stability.ai/careers,"Coatue, Lightspeed",Open source AI
+Hugging Face,https://huggingface.co,https://huggingface.co/careers,"a16z, Sequoia",ML platform
+Modal,https://modal.com,https://modal.com/careers,"Redpoint, a16z",Serverless AI infra
+Weights & Biases,https://wandb.ai,https://wandb.ai/careers,"a16z, Insight Partners",ML ops
+LangChain,https://langchain.com,https://langchain.com/careers,"Sequoia, Benchmark",LLM orchestration
+Pinecone,https://pinecone.io,https://pinecone.io/careers,"a16z, Menlo Ventures",Vector database
+Weaviate,https://weaviate.io,https://weaviate.io/careers,"NEA, Index Ventures",Vector database
+Chroma,https://trychroma.com,https://trychroma.com/careers,"a16z",Vector database
+Neon,https://neon.tech,https://neon.tech/careers,"a16z, GGV",Serverless Postgres
+Supabase,https://supabase.com,https://supabase.com/careers,"Felicis, Lightspeed",Backend platform
+Clerk,https://clerk.com,https://clerk.com/careers,"Madrona, a16z",Auth for AI apps
+
+# =====================================================
+# Hot AI Startups from Top SF VCs (2025-2026)
+# Verified ATS types - Feb 2026
+# =====================================================
+
+# Frontier Labs & Foundation Models
+Safe Superintelligence,https://ssi.inc,https://ssi.inc/careers,"Sequoia, a16z, DST Global",$2B+ raised - Ilya Sutskever's AI safety lab
+Thinking Machines Lab,https://thinkingmachines.ai,https://thinkingmachines.ai/careers,"a16z, Nvidia, AMD",$2B raised - Mira Murati's new lab
+Reka AI,https://reka.ai,https://reka.ai/careers,"DST Global, Softbank",Multimodal AI models
+Imbue,https://imbue.com,https://imbue.com/careers,"Astera Institute",AI reasoning and agents ($200M raised)
+
+# AI Infrastructure & Compute
+CoreWeave,https://www.coreweave.com,https://www.coreweave.com/careers/job,"Magnetar, Coatue",GPU cloud ($15B+ raised - IPO 2025)
+Cerebras,https://www.cerebras.ai,https://www.cerebras.ai/open-positions,"a16z, Altimeter",$1B+ raised - Wafer-scale AI chips
+Lambda,https://lambda.ai,https://lambda.ai/careers,"a16z, Gradient Ventures",$2.3B raised - GPU cloud for AI
+Groq,https://groq.com,https://groq.com/careers,"Tiger Global, Samsung",$750M+ raised - LPU AI inference chips
+Fireworks AI,https://fireworks.ai,https://fireworks.ai/careers,"Benchmark, Sequoia",$254M raised - Fast AI inference platform
+Baseten,https://www.baseten.co,https://www.baseten.co/careers/,"Greylock, a16z",ML model deployment infra
+Contextual AI,https://contextual.ai,https://contextual.ai/careers,"Greycroft, Google Ventures",Enterprise RAG platform
+
+# AI Applications - Enterprise
+Distyl AI,https://distyl.ai,https://distyl.ai/careers,"Khosla, Lightspeed",$175M raised - Enterprise AI software
+Hebbia,https://hebbia.ai,https://careers.hebbia.ai/,"a16z, Peter Thiel, Index",AI for finance ($130M+ raised)
+Assembled,https://assembled.com,https://assembled.com/careers,"NEA, Emergence, Stripe",AI customer support ops ($70M raised)
+Labelbox,https://labelbox.com,https://labelbox.com/company/careers/,"SoftBank, a16z, Databricks",AI data labeling platform
+Encord,https://encord.com,https://encord.com/careers/,"CRV, YC, Next47",AI data infrastructure
+
+# AI Applications - Vertical
+Abridge,https://abridge.com,https://abridge.com/careers,"Bessemer, Lightspeed",AI for healthcare documentation ($213M raised)
+OpenEvidence,https://openevidence.com,https://openevidence.com/careers,"a16z",AI for medical ($200M raised)
+Windsurf,https://windsurf.com,https://windsurf.com/careers,"Greenoaks, General Catalyst",AI-powered IDE (Codeium $150M+ raised)
+Harmonic,https://harmonic.ai,https://harmonic.ai/careers,"Craft, Sozo, Floodgate",AI startup database for VCs

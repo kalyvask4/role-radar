@@ -1,0 +1,455 @@
+# Role Radar — AI Companies Overrides
+#
+# This file lets you add/remove companies from the in-code AI seed list
+# without touching Python. Bump `last_updated` whenever you edit it so that
+# future-you knows when the list was last reviewed.
+#
+# Schema:
+#   last_updated: YYYY-MM-DD
+#   add:
+#     - name: "Company Name"           # required
+#       homepage: "https://..."
+#       careers_url: "https://..."
+#       ats_type: greenhouse|lever|ashby|smartrecruiters|generic_html|unknown
+#       ats_identifier: "board-token"  # for greenhouse/lever/ashby
+#       category: frontier_lab|ai_infra|ai_apps|ai_dev_tools|ai_adjacent
+#       funding_amount_m: 250          # optional, in $M
+#       employee_count_estimate: 100   # optional
+#       is_public: false               # optional
+#       github_stars: 10000            # optional
+#       description: "one-line summary shown in the email/report"
+#       notable_achievements:          # optional, list of strings
+#         - "Series B led by a16z"
+#   remove:
+#     - "Adept"                        # match by exact name (case-insensitive)
+
+last_updated: "2026-04-27"
+
+add:
+  # ===== Big Tech =====
+  # Note: Google/Apple/Microsoft/Amazon use heavy JS careers sites — generic_html
+  # scraping may yield 0 jobs. Greenhouse-based ones (Airbnb, Pinterest, etc.) are
+  # the most reliable. Listed regardless so they show up in `role-radar companies`.
+
+  - name: "Google"
+    homepage: "https://google.com"
+    careers_url: "https://www.google.com/about/careers/applications/jobs/results/?location=California"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 180000
+    description: "Search, ads, cloud, Gemini AI"
+
+  - name: "Apple"
+    homepage: "https://apple.com"
+    careers_url: "https://jobs.apple.com/en-us/search?location=california-CA"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 161000
+    description: "Consumer hardware, services, Apple Intelligence"
+
+  - name: "Microsoft"
+    homepage: "https://microsoft.com"
+    careers_url: "https://jobs.careers.microsoft.com/global/en/search?lc=California%2C%20United%20States"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 228000
+    description: "Cloud, productivity, Copilot, OpenAI partner"
+
+  - name: "Amazon"
+    homepage: "https://amazon.com"
+    careers_url: "https://www.amazon.jobs/en/search?base_query=product+manager&loc_query=California"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 1500000
+    description: "E-commerce, AWS, Alexa, Bedrock AI"
+
+  - name: "Netflix"
+    homepage: "https://netflix.com"
+    careers_url: "https://explore.jobs.netflix.net/careers"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 14000
+    description: "Streaming entertainment"
+
+  - name: "Airbnb"
+    homepage: "https://airbnb.com"
+    careers_url: "https://careers.airbnb.com"
+    ats_type: greenhouse
+    ats_identifier: airbnb
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 7000
+    description: "Travel and hospitality marketplace"
+
+  - name: "Uber"
+    homepage: "https://uber.com"
+    careers_url: "https://www.uber.com/us/en/careers/list/"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 32000
+    description: "Rideshare, delivery, freight"
+
+  - name: "LinkedIn"
+    homepage: "https://linkedin.com"
+    careers_url: "https://careers.linkedin.com/jobs"
+    ats_type: generic_html
+    category: ai_adjacent
+    employee_count_estimate: 21000
+    description: "Professional network (Microsoft-owned)"
+
+  - name: "Pinterest"
+    homepage: "https://pinterest.com"
+    careers_url: "https://www.pinterestcareers.com"
+    ats_type: greenhouse
+    ats_identifier: pinterest
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 4000
+    description: "Visual discovery platform"
+
+  - name: "Snap"
+    homepage: "https://snap.com"
+    careers_url: "https://careers.snap.com/jobs"
+    ats_type: greenhouse
+    ats_identifier: snap
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 5000
+    description: "Snapchat, AR camera platform"
+
+  - name: "DoorDash"
+    homepage: "https://doordash.com"
+    careers_url: "https://careers.doordash.com"
+    ats_type: greenhouse
+    ats_identifier: doordash
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 22000
+    description: "Local commerce and delivery"
+
+  - name: "Lyft"
+    homepage: "https://lyft.com"
+    careers_url: "https://www.lyft.com/careers"
+    ats_type: greenhouse
+    ats_identifier: lyft
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 3000
+    description: "Rideshare and transportation"
+
+  - name: "Instacart"
+    homepage: "https://instacart.com"
+    careers_url: "https://careers.instacart.com"
+    ats_type: greenhouse
+    ats_identifier: instacart
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 3500
+    description: "Grocery delivery and ads"
+
+  - name: "Adobe"
+    homepage: "https://adobe.com"
+    careers_url: "https://careers.adobe.com/us/en/search-results?keywords=product%20manager"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 30000
+    description: "Creative cloud, Firefly AI"
+
+  - name: "Salesforce"
+    homepage: "https://salesforce.com"
+    careers_url: "https://careers.salesforce.com/en/jobs"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 73000
+    description: "CRM and Agentforce AI"
+
+  - name: "Reddit"
+    homepage: "https://reddit.com"
+    careers_url: "https://www.redditinc.com/careers"
+    ats_type: greenhouse
+    ats_identifier: reddit
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 2000
+    description: "Social discussion platform"
+
+  - name: "Robinhood"
+    homepage: "https://robinhood.com"
+    careers_url: "https://careers.robinhood.com"
+    ats_type: greenhouse
+    ats_identifier: robinhood
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 2500
+    description: "Retail brokerage and crypto"
+
+  # ===== From Ben Lang's "best companies for future founders" list =====
+
+  - name: "Ramp"
+    homepage: "https://ramp.com"
+    careers_url: "https://ramp.com/careers"
+    ats_type: ashby
+    ats_identifier: ramp
+    category: ai_adjacent
+    funding_amount_m: 1400
+    description: "Corporate spend management"
+    notable_achievements: ["Fastest-growing fintech", "$13B valuation"]
+
+  - name: "Figure"
+    homepage: "https://figure.ai"
+    careers_url: "https://www.figure.ai/careers"
+    ats_type: ashby
+    ats_identifier: figure
+    category: ai_apps
+    funding_amount_m: 854
+    description: "Humanoid robotics"
+    notable_achievements: ["BMW partnership", "$2.6B valuation"]
+
+  - name: "Mercury"
+    homepage: "https://mercury.com"
+    careers_url: "https://mercury.com/jobs"
+    ats_type: ashby
+    ats_identifier: mercury
+    category: ai_adjacent
+    funding_amount_m: 152
+    description: "Banking for startups"
+    notable_achievements: ["$3.5B valuation"]
+
+  - name: "Stripe"
+    homepage: "https://stripe.com"
+    careers_url: "https://stripe.com/jobs/search"
+    ats_type: greenhouse
+    ats_identifier: stripe
+    category: ai_adjacent
+    funding_amount_m: 9000
+    employee_count_estimate: 8000
+    description: "Payments infrastructure"
+    notable_achievements: ["$70B valuation", "Stripe Radar AI"]
+
+  - name: "Profound"
+    homepage: "https://tryprofound.com"
+    careers_url: "https://tryprofound.com/careers"
+    ats_type: ashby
+    ats_identifier: profound
+    category: ai_apps
+    funding_amount_m: 35
+    description: "AI marketing visibility (brand monitoring in LLMs)"
+
+  - name: "PostHog"
+    homepage: "https://posthog.com"
+    careers_url: "https://posthog.com/careers"
+    ats_type: ashby
+    ats_identifier: posthog
+    category: ai_dev_tools
+    funding_amount_m: 27
+    github_stars: 22000
+    description: "Open-source product analytics"
+
+  - name: "Mintlify"
+    homepage: "https://mintlify.com"
+    careers_url: "https://mintlify.com/careers"
+    ats_type: ashby
+    ats_identifier: mintlify
+    category: ai_dev_tools
+    funding_amount_m: 18
+    description: "AI developer documentation"
+
+  - name: "SpaceX"
+    homepage: "https://spacex.com"
+    careers_url: "https://spacex.com/careers"
+    ats_type: generic_html
+    category: ai_adjacent
+    employee_count_estimate: 13000
+    description: "Space exploration"
+    notable_achievements: ["Reusable rockets", "Starlink"]
+
+  - name: "Browserbase"
+    homepage: "https://browserbase.com"
+    careers_url: "https://browserbase.com/careers"
+    ats_type: ashby
+    ats_identifier: browserbase
+    category: ai_infra
+    funding_amount_m: 27
+    description: "Browsers for AI agents"
+
+  - name: "Palantir Technologies"
+    homepage: "https://palantir.com"
+    careers_url: "https://palantir.com/careers"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 4000
+    description: "Big-data analytics"
+    notable_achievements: ["AIP platform", "Government AI"]
+
+  - name: "Adaptive Security"
+    homepage: "https://adaptivesecurity.com"
+    careers_url: "https://adaptivesecurity.com/careers"
+    ats_type: ashby
+    ats_identifier: adaptivesecurity
+    category: ai_apps
+    funding_amount_m: 43
+    description: "AI anti-phishing"
+
+  - name: "Slash"
+    homepage: "https://slash.com"
+    careers_url: "https://slash.com/careers"
+    ats_type: ashby
+    ats_identifier: slash
+    category: ai_adjacent
+    description: "Banking for internet businesses"
+
+  - name: "Standard Metrics"
+    homepage: "https://standardmetrics.io"
+    careers_url: "https://standardmetrics.io/careers"
+    ats_type: ashby
+    ats_identifier: standardmetrics
+    category: ai_apps
+    funding_amount_m: 21
+    description: "AI finance for VCs"
+
+  - name: "Superpower"
+    homepage: "https://superpower.com"
+    careers_url: "https://superpower.com/careers"
+    ats_type: ashby
+    ats_identifier: superpower
+    category: ai_apps
+    funding_amount_m: 30
+    description: "AI longevity health"
+
+  - name: "Nozomio"
+    homepage: "https://nozomio.com"
+    careers_url: "https://nozomio.com/careers"
+    ats_type: generic_html
+    category: ai_infra
+    description: "Context infrastructure for AI agents"
+
+  - name: "Foam"
+    homepage: "https://foam.ai"
+    careers_url: "https://foam.ai/careers"
+    ats_type: generic_html
+    category: ai_infra
+    description: "Observability for AI systems"
+
+  - name: "Lovable"
+    homepage: "https://lovable.dev"
+    careers_url: "https://lovable.dev/careers"
+    ats_type: ashby
+    ats_identifier: lovable
+    category: ai_dev_tools
+    funding_amount_m: 22
+    description: "AI app builder"
+    notable_achievements: ["Fastest-growing AI startup in Europe"]
+
+  - name: "Polymarket"
+    homepage: "https://polymarket.com"
+    careers_url: "https://polymarket.com/careers"
+    ats_type: ashby
+    ats_identifier: polymarket
+    category: ai_adjacent
+    funding_amount_m: 70
+    description: "Decentralized prediction market"
+
+  - name: "Starcloud"
+    homepage: "https://starcloud.com"
+    careers_url: "https://starcloud.com/careers"
+    ats_type: generic_html
+    category: ai_infra
+    description: "Space-based data centers"
+
+  - name: "Linear"
+    homepage: "https://linear.app"
+    careers_url: "https://linear.app/careers"
+    ats_type: ashby
+    ats_identifier: linear
+    category: ai_adjacent
+    funding_amount_m: 35
+    description: "Issue tracking and project management"
+
+  - name: "bolt.new"
+    homepage: "https://bolt.new"
+    careers_url: "https://stackblitz.com/careers"
+    ats_type: ashby
+    ats_identifier: stackblitz
+    category: ai_dev_tools
+    funding_amount_m: 105
+    description: "AI app prototyping"
+    notable_achievements: ["$20M ARR in 2 months"]
+
+  - name: "Anduril Industries"
+    homepage: "https://anduril.com"
+    careers_url: "https://anduril.com/careers"
+    ats_type: greenhouse
+    ats_identifier: anduril
+    category: ai_apps
+    funding_amount_m: 3700
+    employee_count_estimate: 4000
+    description: "Defense AI"
+    notable_achievements: ["Lattice OS", "$14B valuation"]
+
+  - name: "Raindrop"
+    homepage: "https://raindrop.ai"
+    careers_url: "https://raindrop.ai/careers"
+    ats_type: ashby
+    ats_identifier: raindrop
+    category: ai_dev_tools
+    description: "AI agent observability"
+
+  - name: "incident.io"
+    homepage: "https://incident.io"
+    careers_url: "https://incident.io/careers"
+    ats_type: ashby
+    ats_identifier: incidentio
+    category: ai_adjacent
+    funding_amount_m: 95
+    description: "Incident management"
+
+  - name: "Framer"
+    homepage: "https://framer.com"
+    careers_url: "https://framer.com/careers"
+    ats_type: ashby
+    ats_identifier: framer
+    category: ai_adjacent
+    funding_amount_m: 51
+    description: "No-code website builder"
+
+  - name: "Zapier"
+    homepage: "https://zapier.com"
+    careers_url: "https://zapier.com/jobs"
+    ats_type: greenhouse
+    ats_identifier: zapier
+    category: ai_adjacent
+    funding_amount_m: 1400
+    employee_count_estimate: 800
+    description: "Automation and workflow"
+    notable_achievements: ["Zapier AI Actions", "$5B valuation"]
+
+  - name: "Coinbase"
+    homepage: "https://coinbase.com"
+    careers_url: "https://coinbase.com/careers"
+    ats_type: greenhouse
+    ats_identifier: coinbase
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 3500
+    description: "Crypto and fintech"
+
+  - name: "Shopify"
+    homepage: "https://shopify.com"
+    careers_url: "https://shopify.com/careers"
+    ats_type: generic_html
+    category: ai_adjacent
+    is_public: true
+    employee_count_estimate: 11000
+    description: "E-commerce platform"
+    notable_achievements: ["Shopify Magic AI", "Sidekick assistant"]
+
+remove: []
