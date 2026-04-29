@@ -5,361 +5,321 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Role Radar - Job Review</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
     <style>
-        /* Stripe-inspired Light Theme */
+        /* ───── Impeccable design system: tinted neutrals, modular type scale,
+           serif headings, single warm accent, hairline rules — no nested cards,
+           no transform-bounce hovers, no gradients on body content. ───── */
         :root {
-            --stripe-bg: #f6f9fc;
-            --stripe-surface: #ffffff;
-            --stripe-text: #1a1f36;
-            --stripe-text-muted: #697386;
-            --stripe-border: #e3e8ee;
-            --stripe-accent: #635bff;
-            --stripe-accent-hover: #5851eb;
-            --stripe-success: #30b57f;
-            --stripe-error: #ed5f74;
-            --stripe-info: #3b82f6;
-            --stripe-warning: #f59e0b;
-            --stripe-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* Aliases retained so existing class-based styles keep resolving. */
+            --bg:           #F7F6F3;
+            --surface:      #FFFFFF;
+            --rule:         #EAE7E0;
+            --rule-soft:    #F0EDE6;
+            --ink:          #1F1D1A;
+            --ink-muted:    #6E6A63;
+            --ink-soft:     #9A958C;
+            --accent:       #C2410C;   /* terracotta */
+            --accent-hover: #9A340A;
+            --accent-bg:    #FBEBE0;
+            --good:         #15803D;
+            --good-bg:      #E7F1EA;
+            --bad:          #B91C1C;
+            --bad-bg:       #FBEAEA;
+            --info:         #1E5FAE;
+            --info-bg:      #E5EDF6;
+
+            /* Back-compat aliases — old code references these names. */
+            --stripe-bg:           var(--bg);
+            --stripe-surface:      var(--surface);
+            --stripe-text:         var(--ink);
+            --stripe-text-muted:   var(--ink-muted);
+            --stripe-border:       var(--rule);
+            --stripe-accent:       var(--accent);
+            --stripe-accent-hover: var(--accent-hover);
+            --stripe-success:      var(--good);
+            --stripe-error:        var(--bad);
+            --stripe-info:         var(--info);
+            --stripe-warning:      #B45309;
+            --stripe-gradient:     var(--accent);  /* gradients flattened to solid */
         }
 
         * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Söhne', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
+        }
+        h1, h2, h3, .stat-value, .role-title, .serif {
+            font-family: 'Fraunces', 'Iowan Old Style', Georgia, serif !important;
+            font-weight: 500;
+            letter-spacing: -0.01em;
         }
 
         body {
-            background: var(--stripe-bg);
-            color: var(--stripe-text);
+            background: var(--bg);
+            color: var(--ink);
             min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Cards & Surfaces */
+        /* ───── Cards: flat surface, hairline border, no shadows or lift ───── */
         .card {
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            box-shadow: none;
+            transition: border-color 150ms ease-out;
         }
-        .card:hover {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
+        .card:hover { border-color: var(--ink-soft); box-shadow: none; transform: none; }
 
         .job-card {
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 12px;
-            transition: all 0.25s ease;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            transition: border-color 150ms ease-out, background 150ms ease-out;
         }
-        .job-card:hover {
-            box-shadow: 0 12px 40px rgba(99, 91, 255, 0.12);
-            border-color: var(--stripe-accent);
-        }
-        .job-card.liked {
-            border-left: 4px solid var(--stripe-success);
-            background: linear-gradient(90deg, rgba(48, 181, 127, 0.03) 0%, transparent 100%);
-        }
-        .job-card.disliked {
-            border-left: 4px solid var(--stripe-error);
-            opacity: 0.5;
-        }
-        .job-card.applied {
-            border-left: 4px solid var(--stripe-info);
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.03) 0%, transparent 100%);
-        }
-        .job-card.selected {
-            box-shadow: 0 0 0 2px var(--stripe-accent);
-        }
+        .job-card:hover { border-color: var(--ink-soft); box-shadow: none; transform: none; }
+        .job-card.liked     { border-left: 3px solid var(--good); background: var(--good-bg); }
+        .job-card.disliked  { border-left: 3px solid var(--bad);  opacity: 0.45; }
+        .job-card.applied   { border-left: 3px solid var(--info); background: var(--info-bg); }
+        .job-card.selected  { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
 
-        /* Buttons */
+        /* ───── Buttons ───── */
         .btn-primary {
-            background: var(--stripe-accent);
-            color: white;
-            border-radius: 8px;
+            background: var(--ink);
+            color: var(--surface);
+            border-radius: 4px;
             font-weight: 500;
-            transition: all 0.15s ease;
+            border: 1px solid var(--ink);
+            transition: background 150ms ease-out, border-color 150ms ease-out;
         }
-        .btn-primary:hover {
-            background: var(--stripe-accent-hover);
-            transform: translateY(-1px);
-        }
+        .btn-primary:hover { background: var(--accent); border-color: var(--accent); transform: none; }
 
         .btn-secondary {
-            background: var(--stripe-surface);
-            color: var(--stripe-text);
-            border: 1px solid var(--stripe-border);
-            border-radius: 8px;
+            background: var(--surface);
+            color: var(--ink);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
             font-weight: 500;
-            transition: all 0.15s ease;
+            transition: border-color 150ms ease-out;
         }
-        .btn-secondary:hover {
-            background: var(--stripe-bg);
-            border-color: var(--stripe-accent);
-        }
+        .btn-secondary:hover { background: var(--surface); border-color: var(--ink); }
 
+        /* ───── Feedback buttons (square, no scale-bounce) ───── */
         .feedback-btn {
             width: 40px;
             height: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--stripe-border);
-            background: var(--stripe-surface);
-            transition: all 0.2s ease;
+            border-radius: 4px;
+            border: 1px solid var(--rule);
+            background: var(--surface);
+            color: var(--ink-muted);
+            transition: border-color 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .feedback-btn:hover {
-            transform: scale(1.1);
-            border-color: var(--stripe-accent);
-        }
-        .feedback-btn.active-like {
-            background: var(--stripe-success);
-            color: white;
-            border-color: var(--stripe-success);
-        }
-        .feedback-btn.active-dislike {
-            background: var(--stripe-error);
-            color: white;
-            border-color: var(--stripe-error);
-        }
-        .feedback-btn.active-applied {
-            background: var(--stripe-info);
-            color: white;
-            border-color: var(--stripe-info);
-        }
+        .feedback-btn:hover { border-color: var(--ink); color: var(--ink); transform: none; }
+        .feedback-btn.active-like    { background: var(--good); color: white; border-color: var(--good); }
+        .feedback-btn.active-dislike { background: var(--bad);  color: white; border-color: var(--bad); }
+        .feedback-btn.active-applied { background: var(--info); color: white; border-color: var(--info); }
 
-        /* Filter chips */
+        /* ───── Filter chips ───── */
         .filter-chip {
             cursor: pointer;
-            transition: all 0.2s;
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
+            transition: border-color 150ms ease-out, color 150ms ease-out, background 150ms ease-out;
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 13px;
             font-weight: 500;
+            color: var(--ink-muted);
         }
-        .filter-chip:hover {
-            border-color: var(--stripe-accent);
-            color: var(--stripe-accent);
-        }
+        .filter-chip:hover { border-color: var(--ink); color: var(--ink); }
         .filter-chip.active {
-            background: var(--stripe-accent);
-            color: white;
-            border-color: var(--stripe-accent);
+            background: var(--ink);
+            color: var(--surface);
+            border-color: var(--ink);
         }
 
-        /* Inputs */
-        .search-input {
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        .search-input:focus {
-            border-color: var(--stripe-accent);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
-        }
-
-        .sort-select {
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 8px;
+        /* ───── Inputs ───── */
+        .search-input, .sort-select {
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
             padding: 8px 12px;
             font-size: 14px;
+            color: var(--ink);
+            transition: border-color 150ms ease-out;
         }
-        .sort-select:focus {
-            border-color: var(--stripe-accent);
+        .search-input:focus, .sort-select:focus {
+            border-color: var(--ink);
             outline: none;
+            box-shadow: none;
         }
 
-        /* Score visualization */
+        /* ───── Score bar (single accent, no gradient) ───── */
         .score-bar {
-            height: 6px;
-            border-radius: 3px;
-            background: var(--stripe-border);
+            height: 4px;
+            border-radius: 2px;
+            background: var(--rule);
             overflow: hidden;
         }
         .score-fill {
             height: 100%;
-            border-radius: 3px;
-            background: var(--stripe-gradient);
-            transition: width 0.5s ease;
+            border-radius: 2px;
+            background: var(--accent);
+            transition: width 300ms ease-out;
         }
 
-        /* Stats cards */
+        /* ───── Stats: hairline-bordered tile, no card chrome ───── */
         .stat-card {
-            background: var(--stripe-surface);
-            border: 1px solid var(--stripe-border);
-            border-radius: 12px;
-            padding: 20px;
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--rule-soft);
+            border-radius: 0;
+            padding: 16px 24px 16px 0;
         }
+        .stat-card:last-child { border-right: none; }
         .stat-value {
             font-size: 32px;
-            font-weight: 700;
-            background: var(--stripe-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            color: var(--ink);
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
         }
 
-        /* Header */
+        /* ───── Header ───── */
         .header-bg {
-            background: var(--stripe-surface);
-            border-bottom: 1px solid var(--stripe-border);
+            background: var(--surface);
+            border-bottom: 1px solid var(--rule);
         }
 
-        /* Tags & badges */
+        /* ───── Tags & badges ───── */
         .match-tag {
-            background: rgba(99, 91, 255, 0.08);
-            color: var(--stripe-accent);
-            border: 1px solid rgba(99, 91, 255, 0.2);
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 12px;
+            background: var(--accent-bg);
+            color: var(--accent);
+            border: none;
+            border-radius: 999px;
+            padding: 2px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
         }
 
         .company-badge {
             font-size: 11px;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 4px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
         }
-        .badge-ai {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .badge-vc {
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-            color: white;
-        }
+        .badge-ai { background: var(--accent-bg); color: var(--accent); }
+        .badge-vc { background: #FBF3E0; color: #92580E; }
 
-        /* Research & networking links */
+        /* ───── Research link ───── */
         .research-link {
-            background: var(--stripe-bg);
-            border: 1px solid var(--stripe-border);
-            border-radius: 6px;
-            padding: 6px 10px;
+            background: transparent;
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            padding: 5px 10px;
             font-size: 12px;
-            color: var(--stripe-text-muted);
-            transition: all 0.2s;
+            color: var(--ink-muted);
+            transition: border-color 150ms ease-out, color 150ms ease-out;
         }
-        .research-link:hover {
-            border-color: var(--stripe-accent);
-            color: var(--stripe-accent);
-        }
+        .research-link:hover { border-color: var(--ink); color: var(--ink); }
 
+        /* ───── Networking links: keep semantic colors (Greek blue, Stanford red)
+           but drop the bouncy hover. ───── */
         .networking-link {
-            border-radius: 6px;
-            padding: 6px 10px;
+            border-radius: 4px;
+            padding: 5px 10px;
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: opacity 150ms ease-out;
         }
-        .networking-link.greek-link {
-            background: #0d5eaf;
-            color: white;
-            border: 1px solid #0d5eaf;
-        }
-        .networking-link.greek-link:hover {
-            background: #094b8d;
-            transform: scale(1.02);
-        }
-        .networking-link.gsb-link {
-            background: #8c1515;
-            color: white;
-            border: 1px solid #8c1515;
-        }
-        .networking-link.gsb-link:hover {
-            background: #6e1010;
-            transform: scale(1.02);
-        }
+        .networking-link.greek-link { background: #0d5eaf; color: white; border: 1px solid #0d5eaf; }
+        .networking-link.greek-link:hover { background: #094b8d; transform: none; opacity: 1; }
+        .networking-link.gsb-link   { background: #8c1515; color: white; border: 1px solid #8c1515; }
+        .networking-link.gsb-link:hover   { background: #6e1010; transform: none; opacity: 1; }
 
-        /* Description preview */
-        .description-preview {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .description-preview.expanded {
-            max-height: 400px;
-            overflow-y: auto;
-        }
+        /* ───── Description preview ───── */
+        .description-preview { max-height: 0; overflow: hidden; transition: max-height 200ms ease-out; }
+        .description-preview.expanded { max-height: 400px; overflow-y: auto; }
 
-        /* Progress bar */
-        .progress-bar {
-            background: var(--stripe-border);
-            height: 4px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--stripe-gradient);
-            transition: width 0.3s ease;
-        }
+        /* ───── Progress bar ───── */
+        .progress-bar { background: var(--rule); height: 3px; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 200ms ease-out; }
 
-        /* Toast */
+        /* ───── Toast ───── */
         .toast {
-            animation: slideIn 0.3s ease;
+            background: var(--ink);
+            color: var(--surface);
+            border-radius: 4px;
+            animation: slideIn 200ms ease-out;
         }
         @keyframes slideIn {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from { transform: translateY(8px); opacity: 0; }
+            to   { transform: translateY(0);   opacity: 1; }
         }
 
-        /* Modal */
-        .modal-bg {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
+        /* ───── Modal ───── */
+        .modal-bg { background: rgba(31, 29, 26, 0.4); backdrop-filter: blur(2px); }
         .modal-content {
-            background: var(--stripe-surface);
-            border-radius: 16px;
-            box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+            background: var(--surface);
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            box-shadow: 0 16px 48px rgba(31, 29, 26, 0.10);
         }
 
-        /* Company logo */
+        /* ───── Company avatar (initials, flat) ───── */
         .company-logo-placeholder {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: var(--stripe-gradient);
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            background: var(--rule-soft);
+            color: var(--ink);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: white;
+            font-weight: 500;
+            font-size: 16px;
+            font-family: 'Fraunces', Georgia, serif;
         }
 
-        /* Keyboard shortcuts hint */
+        /* ───── Kbd ───── */
         .kbd {
-            background: var(--stripe-bg);
-            border: 1px solid var(--stripe-border);
-            padding: 2px 6px;
-            border-radius: 4px;
+            background: var(--rule-soft);
+            border: 1px solid var(--rule);
+            padding: 1px 6px;
+            border-radius: 3px;
             font-size: 11px;
-            font-family: monospace;
-            color: var(--stripe-text-muted);
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            color: var(--ink-muted);
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--stripe-bg); }
-        ::-webkit-scrollbar-thumb { background: var(--stripe-border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--stripe-accent); }
+        /* ───── Scrollbar ───── */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
 
-        /* Links */
-        a { color: var(--stripe-accent); text-decoration: none; }
-        a:hover { color: var(--stripe-accent-hover); }
+        /* ───── Links ───── */
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
 
-        /* Expand button */
-        .expand-btn { transition: transform 0.2s; }
+        /* ───── Expand button ───── */
+        .expand-btn { transition: transform 200ms ease-out; color: var(--ink-muted); }
         .expand-btn.rotated { transform: rotate(180deg); }
+
+        /* ───── Tabular numbers everywhere they help ───── */
+        .stat-value, .score-bar + *, .feedback-btn span, .progress-fill,
+        .tabular { font-variant-numeric: tabular-nums; }
     </style>
 </head>
 <body>
